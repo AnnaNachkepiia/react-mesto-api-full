@@ -1,0 +1,5 @@
+.header__nav-item{
+}
+.header__nav-item:first-child{
+    margin-right: 24px;
+}
