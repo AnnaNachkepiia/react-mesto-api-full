@@ -1,5 +1,5 @@
 // const BASE_URL = "https://auth.nomoreparties.co";
-const BASE_URL =  "http://localhost:3000";
+const BASE_URL = "http://nachkepiia.nomorepartiesxyz.ru";
 
 const getErrorMessage = (res) => {
   if (res.ok) {
@@ -24,7 +24,7 @@ export const autorize = ({ email, password }) => {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: 'include',
+    credentials: "include",
     body: JSON.stringify({ email, password }),
   }).then(getErrorMessage);
 };
