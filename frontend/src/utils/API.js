@@ -13,14 +13,14 @@ class Api {
 
   // Получить начальные карточки (GET)
   getInitialCards() {
-    return fetch(`${this._baseUrl}cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     }).then(this._checkRes);
   }
 
   // Добавить новую карточку (POST)
   addNewCard(card) {
-    return fetch(`${this._baseUrl}cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
@@ -32,7 +32,7 @@ class Api {
 
   // Удалить карточку (DELETE)
   deleteCard(id) {
-    return fetch(`${this._baseUrl}cards/${id}`, {
+    return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
     }).then(this._checkRes);
@@ -40,7 +40,7 @@ class Api {
 
   // Получить данные пользователя (GET)
   getUserData() {
-    return fetch(`${this._baseUrl}users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "GET",
       headers: this._headers,
     }).then(this._checkRes);
@@ -48,7 +48,7 @@ class Api {
 
   // Заменить данные пользователя (PATCH)
   editUserData(data) {
-    return fetch(`${this._baseUrl}users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
@@ -60,7 +60,7 @@ class Api {
 
   // Заменить аватар (PATCH)
   editUserAvatar(link) {
-    return fetch(`${this._baseUrl}users/me/avatar`, {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
@@ -71,7 +71,7 @@ class Api {
 
   // Поставть лайк карточке (PUT)
   likeHandler(id) {
-    return fetch(`${this._baseUrl}cards/${id}/likes`, {
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then(this._checkRes);
@@ -79,7 +79,7 @@ class Api {
 
   // Удалить лайк карточки (DELETE)
   deleteLikeHandler(id) {
-    return fetch(`${this._baseUrl}cards/${id}/likes`, {
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "DELETE",
       headers: this._headers,
     }).then(this._checkRes);
@@ -90,7 +90,7 @@ class Api {
     if (isLiked) {
       return this.deleteLikeHandler(id);
     } else {
-      return this.likeHandler(id); 
+      return this.likeHandler(id);
     }
   }
 
@@ -101,9 +101,9 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-40/",
+  baseUrl: "https://nachkepiia.nomorepartiesxyz.ru",
   headers: {
-    authorization: "a21500ca-3216-4c89-8f3a-5037d5204e6f",
+    authorization: `Bearer ${localStorage.getItem("jwt")}`,
     "Content-Type": "application/json",
   },
 });

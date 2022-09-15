@@ -1,5 +1,5 @@
 // const BASE_URL = "https://auth.nomoreparties.co";
-const BASE_URL = "http://nachkepiia.nomorepartiesxyz.ru";
+const BASE_URL = "https://nachkepiia.nomorepartiesxyz.ru";
 // const BASE_URL =  "http://localhost:3000";
 
 const getErrorMessage = (res) => {
@@ -36,7 +36,8 @@ export const tokenCheck = (token) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      // Authorization: `Bearer ${token}`,
     },
   }).then(getErrorMessage);
 };
