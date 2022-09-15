@@ -36,8 +36,7 @@ export const tokenCheck = (token) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${localStorage.getItem("jwt")}`,
-      // Authorization: `Bearer ${token}`,
+      authorization: `Bearer ${localStorage.getItem(token)}`,
     },
   }).then(getErrorMessage);
 };

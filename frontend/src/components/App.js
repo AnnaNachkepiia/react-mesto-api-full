@@ -32,6 +32,20 @@ function App() {
   const history = useHistory();
 
   React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+
+    if (jwt) {
+      tokenCheck(jwt)
+        .then((res) => {
+          setLoggedIn(true);
+          setEmail(res.data.email);
+          history.push("/");
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
+
+  React.useEffect(() => {
     api
       .getInitialData()
       .then(([userData, card]) => {
@@ -39,7 +53,7 @@ function App() {
         setCard(card);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [loggedIn]);
 
   function handleEditProfileClick() {
     setEditProfilePopup(true);
@@ -121,19 +135,7 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-
-    if (jwt) {
-      tokenCheck(jwt)
-        .then((res) => {
-          setEmail(res.data.email);
-          setLoggedIn(true);
-          history.push("/");
-        })
-        .catch((err) => console.log(err));
-    }
-  }, []);
+  
 
   function handleRegister({ email, password }) {
     register({ email, password })
