@@ -31,21 +31,27 @@ function App() {
   const [registerInfo, setRegisterInfo] = useState("");
   const history = useHistory();
 
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-
-    if (jwt) {
-      tokenCheck(jwt)
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      tokenCheck(token)
         .then((res) => {
           setLoggedIn(true);
-          setEmail(res.data.email);
+          setEmail(res.email);
           history.push("/");
         })
         .catch((err) => console.log(err));
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (loggedIn) {
+      getData();
+    }
+  }, [loggedIn]);
+
+
+  function getData() {
     api
       .getInitialData()
       .then(([userData, card]) => {
@@ -53,7 +59,7 @@ function App() {
         setCard(card);
       })
       .catch((err) => console.log(err));
-  }, [loggedIn]);
+  }
 
   function handleEditProfileClick() {
     setEditProfilePopup(true);
@@ -135,8 +141,6 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  
-
   function handleRegister({ email, password }) {
     register({ email, password })
       .then(() => {
@@ -150,8 +154,9 @@ function App() {
 
   function handleLogin({ email, password }) {
     autorize({ email, password })
-      .then(({ token }) => {
-        localStorage.setItem("jwt", token);
+      .then((data) => {
+        api.getToken(data.token);
+        localStorage.setItem("token", data.token);
         setLoggedIn(true);
         setEmail(email);
         history.push("/");
@@ -165,7 +170,7 @@ function App() {
   }
 
   function onExit() {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("token");
     setEmail("");
     setLoggedIn(false);
   }
