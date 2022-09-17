@@ -13,7 +13,12 @@ import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
-import { register, autorize, tokenCheck } from "../utils/Authorization";
+import {
+  register,
+  autorize,
+  tokenCheck,
+  getContent,
+} from "../utils/Authorization";
 import InfoTooltip from "./InfoTooltip";
 
 function App() {
@@ -32,16 +37,24 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      tokenCheck(token)
-        .then((res) => {
-          setLoggedIn(true);
-          setEmail(res.email);
+
+    function tokenCheck () {
+
+        const jwt = localStorage.getItem('token');
+        if(jwt) {
+          getContent(jwt)
+          .then((res) => {
+            console.log(res)
+            if(res) {
+              setLoggedIn(true);
+              setEmail(res.email);
           history.push("/");
-        })
-        .catch((err) => console.log(err));
-    }
+            }
+          })
+        }
+        }
+        tokenCheck()
+  
   }, []);
 
   useEffect(() => {
@@ -50,13 +63,14 @@ function App() {
     }
   }, [loggedIn]);
 
-
   function getData() {
     api
       .getInitialData()
       .then(([userData, card]) => {
         setCurrentUser(userData);
         setCard(card);
+        console.log(card)
+
       })
       .catch((err) => console.log(err));
   }
@@ -155,18 +169,18 @@ function App() {
   function handleLogin({ email, password }) {
     autorize({ email, password })
       .then((data) => {
-        api.getToken(data.token);
         localStorage.setItem("token", data.token);
-        setLoggedIn(true);
-        setEmail(email);
-        history.push("/");
+        console.log(data.token)
+        api.getToken(data.token);
+        if (data.token) {
+          setLoggedIn(true);
+          setEmail(email);
+          history.push("/");
+        }
       })
-      .catch(
-        (err) => {
-          showTooltip(false);
-        },
-        [history]
-      );
+      .catch(() => {
+        showTooltip(false);
+      }, [history]);
   }
 
   function onExit() {

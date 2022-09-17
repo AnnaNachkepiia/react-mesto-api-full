@@ -1,4 +1,4 @@
-const token = `Bearer ${localStorage.getItem("token")}`;
+const token = `${localStorage.getItem("token")}`;
 
 class Api {
   constructor(options) {
@@ -22,7 +22,7 @@ class Api {
   // Получить начальные карточки (GET)
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: getHeaders(),
+      headers: this._headers,
       credentials: "include",
     }).then(this._checkRes);
   }
@@ -31,7 +31,7 @@ class Api {
   addNewCard(card) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
-      headers: getHeaders(),
+      headers: this._headers,
       credentials: "include",
       body: JSON.stringify({
         name: card.name,
@@ -44,7 +44,7 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
-      headers: getHeaders(),
+      headers: this._headers,
       credentials: "include",
     }).then(this._checkRes);
   }
@@ -53,7 +53,7 @@ class Api {
   getUserData() {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "GET",
-      headers: getHeaders(),
+      headers: this._headers,
       credentials: "include",
     }).then(this._checkRes);
   }
@@ -62,7 +62,7 @@ class Api {
   editUserData(data) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
-      headers: getHeaders(),
+      headers: this._headers,
       credentials: "include",
       body: JSON.stringify({
         name: data.name,
@@ -75,7 +75,7 @@ class Api {
   editUserAvatar(link) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: getHeaders(),
+      headers: this._headers,
       credentials: "include",
       body: JSON.stringify({
         avatar: link.avatar,
@@ -87,8 +87,8 @@ class Api {
   likeHandler(id) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "PUT",
-      headers: getHeaders(),
-      credentials: "include",
+      headers: this._headers,
+      // credentials: "include",
     }).then(this._checkRes);
   }
 
@@ -96,8 +96,8 @@ class Api {
   deleteLikeHandler(id) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "DELETE",
-      headers: getHeaders(),
-      credentials: "include",
+      headers: this._headers,
+      // credentials: "include",
     }).then(this._checkRes);
   }
 
@@ -115,19 +115,14 @@ class Api {
     return Promise.all([this.getUserData(), this.getInitialCards()]);
   }
 
-  
-}
-
-const getHeaders = () => {
-  return {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  };
 };
 
 const api = new Api({
   baseUrl: "https://nachkepiia.nomorepartiesxyz.ru",
+  headers : {
+    authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+}
 });
 
 export default api;

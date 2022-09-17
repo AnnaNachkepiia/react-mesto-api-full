@@ -28,17 +28,22 @@ export const autorize = ({ email, password }) => {
     },
     credentials: "include",
     body: JSON.stringify({ email, password }),
-  }).then(getErrorMessage);
+  })
+    .then((token) => {
+      localStorage.setItem("token", token);
+      return token;
+    })
+    .then(getErrorMessage)
+
 };
 
-export const tokenCheck = (token) => {
-  // console.log(token);
+export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   }).then(getErrorMessage);
 };
