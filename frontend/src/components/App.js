@@ -37,24 +37,20 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-
-    function tokenCheck () {
-
-        const jwt = localStorage.getItem('token');
-        if(jwt) {
-          getContent(jwt)
-          .then((res) => {
-            if(res) {
-              setLoggedIn(true);
-              setEmail(res.email);
-          history.push("/");
-            }
-          })
-        }
-        }
-        tokenCheck()
-  
-  }, []);
+    function tokenCheck() {
+      const jwt = localStorage.getItem("token");
+      if (jwt) {
+        getContent(jwt).then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setEmail(res.email);
+            history.push("/");
+          }
+        });
+      }
+    }
+    tokenCheck();
+  }, [history]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -67,7 +63,7 @@ function App() {
       .getInitialData()
       .then(([userData, card]) => {
         setCurrentUser(userData);
-        setCard(card)
+        setCard(card);
       })
       .catch((err) => console.log(err));
   }
@@ -93,9 +89,7 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((item) => 
-      item === currentUser._id
-  );
+    const isLiked = card.likes.some((item) => item === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -112,7 +106,7 @@ function App() {
       .deleteCard(card._id)
       .then(() => {
         setCard((cards) => cards.filter((c) => c._id !== card._id));
-        console.log(card)
+        console.log(card);
       })
       .catch((err) => console.log(err));
   }
