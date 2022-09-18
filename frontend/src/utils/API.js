@@ -103,7 +103,7 @@ class Api {
 
   // Поставить/убрать лайк
   changeLikeCardStatus(id, isLiked) {
-    if (isLiked) {
+    if (!isLiked) {
       return this.deleteLikeHandler(id);
     } else {
       return this.likeHandler(id);
