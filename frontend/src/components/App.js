@@ -164,6 +164,8 @@ function App() {
     autorize({ email, password })
       .then((data) => {
         localStorage.setItem("token", data.token);
+        api.getToken(data.token);
+
         if (data.token) {
           setLoggedIn(true);
           setEmail(email);
