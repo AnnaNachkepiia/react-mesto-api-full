@@ -8,5 +8,5 @@
 ## Фронтэнд домен проекта
 http://nachkepiia.student.nomorepartiesxyz.ru
 
-## Бэкэенд домен
+## Бэкенд домен
 http://nachkepiia.nomorepartiesxyz.ru
